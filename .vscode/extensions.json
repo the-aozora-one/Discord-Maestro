@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "mikestead.dotenv",
+        "christian-kohler.path-intellisense",
+        "sonarsource.sonarlint-vscode",
+        "ms-vscode-remote.remote-wsl",
+        "ms-vscode-remote.remote-containers",
+        "ms-azuretools.vscode-docker"
+    ]
+}

@@ -1,0 +1,34 @@
+{
+  "name": "discord-maestro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:dev": "tsc --watch",
+    "docker:build": "docker compose build",
+    "docker:create-container": "docker create --name discord-maestro tclark78/discord-maestro",
+    "docker:publish": "docker push tclark78/discord-maestro",
+    "docker:pull": "docker pull tclark78/discord-maestro:latest",
+    "start": "node dist/index.js",
+    "start:dev": "nodemon dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discord-player/extractor": "^4.5.1",
+    "@spotify/web-api-ts-sdk": "^1.2.0",
+    "discord-player": "^6.7.1",
+    "discord-player-youtubei": "^1.3.5",
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5",
+    "mediaplex": "^0.0.9",
+    "typescript": "^5.6.3"
+  },
+  "private": true,
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

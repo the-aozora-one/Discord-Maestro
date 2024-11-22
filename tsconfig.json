@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        "lib": [
+            "ES2020",
+        ],
+        "target": "ES2023",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "outDir": "./dist",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+    },
+    "exclude": [
+        "node_modules",
+        "./node_modules",
+        "./node_modules/*",
+        "./node_modules/@discord-player/equalizer/dist/index.d.ts",
+        "./node_modules/@spotify/web-api-ts-sdk/dist/mjs/endpoints/PlaylistsEndpoints.d.ts",
+        "./node_modules/discord-player-youtubei/dist/index.d.ts",
+        "./node_modules/discord-player/dist/index.d.ts",
+        "./node_modules/soundcloud.ts/dist/src/core/clients/Studio.d.ts",
+        "./node_modules/youtubei.js/dist/src/core/clients/Studio.d.ts",
+        "./node_modules/youtubei.js/dist/src/types/PlatformShim.d.ts",
+    ]
+}
