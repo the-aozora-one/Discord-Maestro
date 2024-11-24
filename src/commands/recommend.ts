@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js'
 import { Command } from '../@types/command'
 import { RecommendationsResponse, SpotifyApi } from '@spotify/web-api-ts-sdk'
+import logger from '../utils/logger'
 
 type RecommendationOptions = {
     limit: number,
@@ -81,7 +82,7 @@ export const Recommend: Command = {
         } else if (subcommand === 'song') {
             await recommendationsFromSong(api, interaction)
         } else {
-            console.warn(`${subcommand} was received as a subcommand for ${Recommend.name}.`)
+            logger.warn(`${subcommand} was received as a subcommand for ${Recommend.name}.`)
             interaction.followUp(`${subcommand} is not a valid option. Please choose one of the following instead: artist, song`)
         }
     }

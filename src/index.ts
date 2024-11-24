@@ -4,6 +4,7 @@ import { Client, Events, GatewayIntentBits, REST, Routes, Snowflake } from 'disc
 import { COMMANDS } from './commands'
 import { Player } from 'discord-player'
 import { YoutubeiExtractor } from 'discord-player-youtubei'
+import logger from './utils/logger'
 
 dotenv.config({
     path: path.resolve('.env')
@@ -32,16 +33,16 @@ client.once(Events.ClientReady, async (client: Client<true>) => {
     await player.extractors.register(YoutubeiExtractor, {})
 
     player.on('error', (error) => {
-        console.error(`[ERROR]`, error)
+        logger.error(error)
     })
     player.events.on('playerError', (queue, error, track) => {
-        console.error(`[ERROR]`, {
+        logger.error({
             error: error,
             queue: queue,
             track: track,
         })
     }).on('error', (queue, error) => {
-        console.error(`[ERROR]`, {
+        logger.error({
             error: error,
             queue: queue,
         })
@@ -54,16 +55,15 @@ client.once(Events.ClientReady, async (client: Client<true>) => {
         await deployCommands(client)
 
         player.on('debug', (message) => {
-            console.debug(`[PLAYER]`, message)
-        })
-        .events.on('debug', (queue, message) => {
-            console.debug(`[PLAYER]`, {
+            logger.debug(`[PLAYER]`, message)
+        }).events.on('debug', (queue, message) => {
+            logger.debug(`[PLAYER]`, {
                 message: message,
             })
         })
     }
 
-    console.log(`Ready! Logged in as ${client.user.tag}`)
+    logger.info(`Ready! Logged in as ${client.user.tag}`)
 })
 
 client.on(Events.GuildCreate, async (guild) => {
@@ -71,7 +71,7 @@ client.on(Events.GuildCreate, async (guild) => {
 })
 
 client.on(Events.Error, (error) => {
-    console.error(error)
+    logger.error(error)
 })
 
 client.on(Events.InteractionCreate, async (interaction) => {
@@ -94,20 +94,20 @@ client.on(Events.InteractionCreate, async (interaction) => {
 client.login(token)
 
 async function deployCommands(client: Client<boolean>) {
-    console.debug(`Registering Slash Commands`)
+    logger.debug(`Registering Slash Commands`)
     const rest = new REST({
         version: '10',
     }).setToken(process.env.DISCORD_TOKEN)
 
-    console.debug(`Collecting Slash Commands`)
+    logger.debug(`Collecting Slash Commands`)
     const commands = []
     for (const command of COMMANDS) {
         commands.push(command.data)
     }
     try {
-        console.log(`Started refreshing application (/) commands.`)
+        logger.info(`Started refreshing application (/) commands.`)
 
-        console.debug(`REST URI: ${Routes.applicationGuildCommands(process.env.DISCORD_CLIENT_ID, process.env.DISCORD_GUILD_ID)}`)
+        logger.debug(`REST URI: ${Routes.applicationGuildCommands(process.env.DISCORD_CLIENT_ID, process.env.DISCORD_GUILD_ID)}`)
         await rest.put(
             Routes.applicationGuildCommands(process.env.DISCORD_CLIENT_ID, process.env.DISCORD_GUILD_ID),
             {
@@ -115,28 +115,28 @@ async function deployCommands(client: Client<boolean>) {
             }
         )
 
-        console.log(`Successfully reloaded ${commands.length} application (/) commands.`)
+        logger.info(`Successfully reloaded ${commands.length} application (/) commands.`)
     } catch (error) {
-        console.debug(`Something went wrong`)
-        console.error(error)
+        logger.debug(`Something went wrong`)
+        logger.error(error)
     }
 }
 
 async function deployGuildCommands(guildId: Snowflake) {
-    console.debug(`Registering Slash Commands for Guild`)
+    logger.debug(`Registering Slash Commands for Guild`)
     const rest = new REST({
         version: '10',
     }).setToken(process.env.DISCORD_TOKEN)
 
-    console.debug(`Collecting Slash Commands`)
+    logger.debug(`Collecting Slash Commands`)
     const commands = []
     for (const command of COMMANDS) {
         commands.push(command.data)
     }
     try {
-        console.log(`Started refreshing guild (/) commands.`)
+        logger.info(`Started refreshing guild (/) commands.`)
 
-        console.debug(`REST URI: ${Routes.applicationGuildCommands(process.env.DISCORD_CLIENT_ID, process.env.DISCORD_GUILD_ID)}`)
+        logger.debug(`REST URI: ${Routes.applicationGuildCommands(process.env.DISCORD_CLIENT_ID, process.env.DISCORD_GUILD_ID)}`)
         await rest.put(
             Routes.applicationGuildCommands(process.env.DISCORD_CLIENT_ID, guildId),
             {
@@ -144,9 +144,9 @@ async function deployGuildCommands(guildId: Snowflake) {
             }
         )
 
-        console.log(`Successfully reloaded ${commands.length} guild (/) commands.`)
+        logger.info(`Successfully reloaded ${commands.length} guild (/) commands.`)
     } catch (error) {
-        console.debug(`Something went wrong`)
-        console.error(error)
+        logger.debug(`Something went wrong`)
+        logger.error(error)
     }
 }

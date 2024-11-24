@@ -1,6 +1,7 @@
-import { ChatInputCommandInteraction, EmbedBuilder, GuildMember, SlashCommandBuilder, time, VoiceBasedChannel } from 'discord.js'
+import { ChatInputCommandInteraction, EmbedBuilder, GuildMember, SlashCommandBuilder, VoiceBasedChannel } from 'discord.js'
 import { Command } from '../@types/command'
 import { QueueRepeatMode, useHistory, useMainPlayer, useQueue, useTimeline } from 'discord-player'
+import logger from '../utils/logger'
 
 export const Music: Command = {
     name: 'music',
@@ -123,7 +124,7 @@ export const Music: Command = {
             return
         }
 
-        console.debug(`Running /music ${subcommand}`)
+        logger.debug(`Running /music ${subcommand}`)
         switch (subcommand) {
             case 'autoplay':
                 // autoplay(interaction, targetVoiceChannel)
@@ -305,7 +306,7 @@ async function play(interaction: ChatInputCommandInteraction, targetVoiceChannel
         return
     }
 
-    console.debug(result.tracks.map((track) => {
+    logger.debug(result.tracks.map((track) => {
         return `${track.raw.title} ${track.raw.author} [${track.raw.source}](${track.raw.url})`
     }))
 
@@ -357,7 +358,7 @@ async function play(interaction: ChatInputCommandInteraction, targetVoiceChannel
             embeds: [embed],
         })
     } catch (error) {
-        console.error(`[ERROR]`, error)
+        logger.error(`[ERROR]`, error)
         interaction.followUp({
             ephemeral: true,
             content: `Something went wrong. Try again.`
